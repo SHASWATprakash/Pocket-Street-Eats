@@ -22,45 +22,52 @@ export default function Home() {
         <p className="mt-3 text-2xl">Discover local eats and enjoy fast delivery!</p>
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl">
-          <Card>
-            <CardHeader>
-              <CardTitle>User Authentication</CardTitle>
-              <CardDescription>Create and manage your account.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button onClick={() => navigateTo('/auth')}>Sign Up / Log In</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Explore Restaurants</CardTitle>
-              <CardDescription>Browse local restaurants and their menus.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button onClick={() => navigateTo('/restaurants')}>View Restaurants</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Track Your Order</CardTitle>
-              <CardDescription>See the status of your order in real-time.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button onClick={() => navigateTo('/track')}>Track Order</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>AI Recommendations</CardTitle>
-              <CardDescription>Get personalized restaurant recommendations.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button onClick={() => navigateTo('/recommendations')}>Get Recommendations</Button>
-            </CardContent>
-          </Card>
+          {[
+            (
+              <Card key="auth">
+                <CardHeader>
+                  <CardTitle>User Authentication</CardTitle>
+                  <CardDescription>Create and manage your account.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button onClick={() => navigateTo('/auth')}>Sign Up / Log In</Button>
+                </CardContent>
+              </Card>
+            ),
+            (
+              <Card key="restaurants">
+                <CardHeader>
+                  <CardTitle>Explore Restaurants</CardTitle>
+                  <CardDescription>Browse local restaurants and their menus.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button onClick={() => navigateTo('/restaurants')}>View Restaurants</Button>
+                </CardContent>
+              </Card>
+            ),
+            (
+              <Card key="track">
+                <CardHeader>
+                  <CardTitle>Track Your Order</CardTitle>
+                  <CardDescription>See the status of your order in real-time.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button onClick={() => navigateTo('/track')}>Track Order</Button>
+                </CardContent>
+              </Card>
+            ),
+            (
+              <Card key="recommendations">
+                <CardHeader>
+                  <CardTitle>AI Recommendations</CardTitle>
+                  <CardDescription>Get personalized restaurant recommendations.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button onClick={() => navigateTo('/recommendations')}>Get Recommendations</Button>
+                </CardContent>
+              </Card>
+            ),
+          ]}
         </div>
       </main>
 
