@@ -28,6 +28,8 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
         setIsAuthenticated(false);
         setUser(null);
       }
+    }).catch((error) => {
+      console.error('Firebase Auth error:', error);
     });
 
     return () => unsubscribe();
@@ -52,5 +54,4 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
-
 
