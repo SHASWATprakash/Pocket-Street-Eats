@@ -1,23 +1,28 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { getRiderLocation } from "@/services/google-maps";
-import { useEffect, useState } from "react";
+import {useRouter} from 'next/navigation';
+import {useEffect, useState} from 'react';
+
+import {Button} from '@/components/ui/button';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {getRiderLocation} from '@/services/google-maps';
 
 export default function Home() {
-  const [riderLocation, setRiderLocation] = useState({ lat: 0, lng: 0 });
+  const [riderLocation, setRiderLocation] = useState({lat: 0, lng: 0});
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchRiderLocation() {
-      const location = await getRiderLocation("rider123");
+      const location = await getRiderLocation('rider123');
       setRiderLocation(location);
     }
 
     fetchRiderLocation();
   }, []);
+
+  const navigateTo = (path: string) => {
+    router.push(path);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -26,48 +31,46 @@ export default function Home() {
           Pocket <span className="text-primary">Street Eats</span>
         </h1>
 
-        <p className="mt-3 text-2xl">
-          Discover local eats and enjoy fast delivery!
-        </p>
+        <p className="mt-3 text-2xl">Discover local eats and enjoy fast delivery!</p>
 
-        <div className="mt-6 flex flex-wrap items-center justify-around max-w-4xl sm:w-full">
-          <Card className="w-96">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl">
+          <Card>
             <CardHeader>
               <CardTitle>User Authentication</CardTitle>
               <CardDescription>Create and manage your account.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button>Sign Up / Log In</Button>
+              <Button onClick={() => navigateTo('/auth')}>Sign Up / Log In</Button>
             </CardContent>
           </Card>
 
-          <Card className="w-96">
+          <Card>
             <CardHeader>
               <CardTitle>Explore Restaurants</CardTitle>
               <CardDescription>Browse local restaurants and their menus.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button>View Restaurants</Button>
+              <Button onClick={() => navigateTo('/restaurants')}>View Restaurants</Button>
             </CardContent>
           </Card>
 
-          <Card className="w-96">
+          <Card>
             <CardHeader>
               <CardTitle>Track Your Order</CardTitle>
               <CardDescription>See the status of your order in real-time.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button>Track Order</Button>
+              <Button onClick={() => navigateTo('/track')}>Track Order</Button>
             </CardContent>
           </Card>
 
-          <Card className="w-96">
+          <Card>
             <CardHeader>
               <CardTitle>AI Recommendations</CardTitle>
               <CardDescription>Get personalized restaurant recommendations.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button>Get Recommendations</Button>
+              <Button onClick={() => navigateTo('/recommendations')}>Get Recommendations</Button>
             </CardContent>
           </Card>
         </div>
@@ -81,9 +84,7 @@ export default function Home() {
       </main>
 
       <footer className="flex items-center justify-center w-full h-24 border-t">
-        <p>
-          Powered by Pocket Street Eats
-        </p>
+        <p>Powered by Pocket Street Eats</p>
       </footer>
     </div>
   );
