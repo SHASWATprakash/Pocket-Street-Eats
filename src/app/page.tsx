@@ -5,12 +5,58 @@ import {useRouter} from 'next/navigation';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 
+interface CardProps {
+  key: string;
+  title: string;
+  description: string;
+  onClick: () => void;
+}
+
+const NavCard: React.FC<CardProps> = ({key, title, description, onClick}) => (
+  <Card key={key}>
+    <CardHeader>
+      <CardTitle>{title}</CardTitle>
+      <CardDescription>{description}</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button onClick={onClick}>View</Button>
+    </CardContent>
+  </Card>
+);
+
 export default function Home() {
   const router = useRouter();
 
   const navigateTo = (path: string) => {
     router.push(path);
   };
+
+  const cardData = [
+    {
+      key: 'auth',
+      title: 'User Authentication',
+      description: 'Create and manage your account.',
+      onClick: () => navigateTo('/auth'),
+    },
+    {
+      key: 'restaurants',
+      title: 'Explore Restaurants',
+      description: 'Browse local restaurants and their menus.',
+      onClick: () => navigateTo('/restaurants'),
+    },
+    {
+      key: 'track',
+      title: 'Track Your Order',
+      description: 'See the status of your order in real-time.',
+      onClick: () => navigateTo('/track'),
+    },
+    {
+      key: 'recommendations',
+      title: 'AI Recommendations',
+      description: 'Get personalized restaurant recommendations.',
+      onClick: () => navigateTo('/recommendations'),
+    },
+  ];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -22,52 +68,29 @@ export default function Home() {
         <p className="mt-3 text-2xl">Discover local eats and enjoy fast delivery!</p>
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl">
-          {[
-            (
-              <Card key="auth">
-                <CardHeader>
-                  <CardTitle>User Authentication</CardTitle>
-                  <CardDescription>Create and manage your account.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button onClick={() => navigateTo('/auth')}>Sign Up / Log In</Button>
-                </CardContent>
-              </Card>
-            ),
-            (
-              <Card key="restaurants">
-                <CardHeader>
-                  <CardTitle>Explore Restaurants</CardTitle>
-                  <CardDescription>Browse local restaurants and their menus.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button onClick={() => navigateTo('/restaurants')}>View Restaurants</Button>
-                </CardContent>
-              </Card>
-            ),
-            (
-              <Card key="track">
-                <CardHeader>
-                  <CardTitle>Track Your Order</CardTitle>
-                  <CardDescription>See the status of your order in real-time.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button onClick={() => navigateTo('/track')}>Track Order</Button>
-                </CardContent>
-              </Card>
-            ),
-            (
-              <Card key="recommendations">
-                <CardHeader>
-                  <CardTitle>AI Recommendations</CardTitle>
-                  <CardDescription>Get personalized restaurant recommendations.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button onClick={() => navigateTo('/recommendations')}>Get Recommendations</Button>
-                </CardContent>
-              </Card>
-            ),
-          ]}
+          {cardData.map(card => {
+            try {
+              return (
+                
+                  <NavCard
+                    key={card.key}
+                    title={card.title}
+                    description={card.description}
+                    onClick={card.onClick}
+                  />
+                
+              );
+            } catch (error: any) {
+              console.error("Error rendering NavCard:", error);
+              return (
+                
+                  
+                    Error loading card
+                  
+                
+              );
+            }
+          })}
         </div>
       </main>
 
@@ -77,3 +100,4 @@ export default function Home() {
     </div>
   );
 }
+

@@ -2,7 +2,7 @@
 
 const TrackOrderPage = () => {
   return (
-    <div>
+    <div className="container py-12">
       <h1>Track Your Order</h1>
       <p>See the status of your order in real-time.</p>
     </div>
