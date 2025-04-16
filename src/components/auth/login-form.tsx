@@ -1,7 +1,8 @@
-'use client';
+"use client";
+// LoginForm component for user login
 
-import {Button} from '@/components/ui/button';
-import {Input} from '@/components/ui/input';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -9,55 +10,70 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
-import {useForm} from 'react-hook-form';
-import * as z from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {signInWithEmailAndPassword, getAuth} from 'firebase/auth';
-import {useRouter} from 'next/navigation';
-import {useState} from 'react';
-import {auth} from '@/lib/firebase';
-import {useToast} from '@/hooks/use-toast';
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
+// Zod schema for login validation
 const loginSchema = z.object({
-  email: z.string().email({message: 'Please enter a valid email address.'}),
-  password: z.string().min(6, {message: 'Password must be at least 6 characters.'}),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters." }),
 });
 
 type LoginValues = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
+  // State to track form submission
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
-  const {toast} = useToast();
+  const router = useRouter(); // Hook for navigation
+  const { toast } = useToast(); // Hook for displaying toast messages
 
+  // Form configuration using react-hook-form
   const form = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema), // Zod for validation
     defaultvalues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
   async function onSubmit(values: LoginValues) {
+    // Handle form submission
     setIsSubmitting(true);
     try {
-      if (!auth) {
-        throw new Error('Firebase Auth is not initialized!');
+      const firebaseAuth = getAuth();
+      if (!firebaseAuth) {
+        throw new Error("Firebase Auth is not initialized!");
       }
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      await signInWithEmailAndPassword(firebaseAuth, values.email, values.password);
       toast({
-        title: 'Login successful!',
-        description: 'You have successfully logged in.',
+        title: "Login successful!",
+        description: "You have successfully logged in.",
       });
-      router.push('/');
+      router.push("/");
     } catch (error: any) {
-      console.error('Login failed:', error);
+      // Handle login error
+      console.error("Login failed:", error);
       toast({
-        variant: 'destructive',
-        title: 'Login failed.',
-        description: error.message || 'Something went wrong. Please try again.',
+        variant: "destructive",
+        title: "Login failed.",
+        description: error.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -65,18 +81,22 @@ export const LoginForm = () => {
   }
 
   return (
+    // Card containing login form
     <Card>
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your email and password to login.</CardDescription>
+        <CardDescription>
+          Enter your email and password to login.
+        </CardDescription>
       </CardHeader>
+      {/* Form content */}
       <CardContent className="space-y-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="email"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
@@ -89,7 +109,7 @@ export const LoginForm = () => {
             <FormField
               control={form.control}
               name="password"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
@@ -101,7 +121,7 @@ export const LoginForm = () => {
             />
             <CardFooter>
               <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? 'Logging in...' : 'Login'}
+                {isSubmitting ? "Logging in..." : "Login"}
               </Button>
             </CardFooter>
           </form>

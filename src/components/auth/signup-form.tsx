@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/ui/button';
-import {Input} from '@/components/ui/input';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -9,60 +9,68 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
-import {useForm} from 'react-hook-form';
-import * as z from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {useRouter} from 'next/navigation';
-import {useState} from 'react';
-import {auth} from '@/lib/firebase';
-import {useToast} from '@/hooks/use-toast';
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
-const signUpSchema = z.object({
-  email: z.string().email({message: 'Please enter a valid email address.'}),
-  password: z.string().min(6, {message: 'Password must be at least 6 characters.'}),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'], // path of error
-});
+const signUpSchema = z
+  .object({
+    email: z.string().email({ message: "Please enter a valid email address." }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters." }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"], // path of error
+  });
 
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
     defaultvalues: {
-      email: '',
-      password: '',
-      confirmPassword: '',
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
   async function onSubmit(values: SignUpValues) {
     setIsSubmitting(true);
     try {
-      if (!auth) {
-        throw new Error('Firebase Auth is not initialized!');
-      }
       await createUserWithEmailAndPassword(auth, values.email, values.password);
       toast({
-        title: 'Sign up successful!',
-        description: 'You have successfully signed up.',
+        title: "Sign up successful!",
+        description: "You have successfully signed up.",
       });
-      router.push('/');
+      router.push("/");
     } catch (error: any) {
-      console.error('Sign up failed:', error);
+      console.error("Sign up failed:", error);
       toast({
-        variant: 'destructive',
-        title: 'Sign up failed.',
-        description: error.message || 'Something went wrong. Please try again.',
+        variant: "destructive",
+        title: "Sign up failed.",
+        description: error.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -73,7 +81,9 @@ export const SignUpForm = () => {
     <Card>
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Create an account by entering your email and password.</CardDescription>
+        <CardDescription>
+          Create an account by entering your email and password.
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <Form {...form}>
@@ -81,7 +91,7 @@ export const SignUpForm = () => {
             <FormField
               control={form.control}
               name="email"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
@@ -94,7 +104,7 @@ export const SignUpForm = () => {
             <FormField
               control={form.control}
               name="password"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
@@ -107,11 +117,15 @@ export const SignUpForm = () => {
             <FormField
               control={form.control}
               name="confirmPassword"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Confirm Password" {...field} type="password" />
+                    <Input
+                      placeholder="Confirm Password"
+                      {...field}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,7 +133,7 @@ export const SignUpForm = () => {
             />
             <CardFooter>
               <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? 'Signing up...' : 'Sign Up'}
+                {isSubmitting ? "Signing up..." : "Sign Up"}
               </Button>
             </CardFooter>
           </form>

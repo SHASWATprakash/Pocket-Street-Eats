@@ -19,7 +19,10 @@ export interface Location {
  * @param destination The destination location.
  * @returns A promise that resolves to the distance in meters.
  */
-export async function getDistance(origin: Location, destination: Location): Promise<number> {
+export async function getDistance(
+  origin: Location,
+  destination: Location,
+): Promise<number> {
   // TODO: Implement this by calling the Google Maps Distance Matrix API.
   return 1500; // Returning a dummy distance of 1500 meters
 }
@@ -31,7 +34,10 @@ export async function getDistance(origin: Location, destination: Location): Prom
  * @param destination The destination location.
  * @returns A promise that resolves to the route as a polyline.
  */
-export async function getRoute(origin: Location, destination: Location): Promise<string> {
+export async function getRoute(
+  origin: Location,
+  destination: Location,
+): Promise<string> {
   // TODO: Implement this by calling the Google Maps Directions API.
   return "encoded_polyline"; // Returning a dummy encoded polyline
 }

@@ -17,7 +17,3 @@
 - Clean and readable typography for easy browsing.
 - Simple and intuitive icons for navigation and features.
 - Clean and modern layout with clear sections for restaurants, food items, and user profile.
-
-## Original User Request:
-An app this is replica of Zomato named Pocket Street with proper food delivery app using google maps , firbase . A cross platform app in which a user can create account and can login with firebase , firestore for DB . and An for rider . Show active status of delivery od food , with frontend , backend and dash borad .
-  
