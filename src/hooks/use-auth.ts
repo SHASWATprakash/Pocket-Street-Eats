@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect, createContext, useContext} from 'react';
+import {useState, useEffect, createContext, useContext, ReactNode} from 'react';
 import {auth} from '@/lib/firebase';
 import {onAuthStateChanged, User} from 'firebase/auth';
 
@@ -11,7 +11,11 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({children}: {children: React.ReactNode}) => {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider = ({children}: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -29,8 +33,13 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     return () => unsubscribe();
   }, []);
 
+  const authContextValue: AuthContextType = {
+    isAuthenticated,
+    user,
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user }}>
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );
@@ -43,3 +52,5 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
+
