@@ -1,24 +1,12 @@
 'use client';
 
 import {useRouter} from 'next/navigation';
-import {useEffect, useState} from 'react';
 
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {getRiderLocation} from '@/services/google-maps';
 
 export default function Home() {
-  const [riderLocation, setRiderLocation] = useState({lat: 0, lng: 0});
   const router = useRouter();
-
-  useEffect(() => {
-    async function fetchRiderLocation() {
-      const location = await getRiderLocation('rider123');
-      setRiderLocation(location);
-    }
-
-    fetchRiderLocation();
-  }, []);
 
   const navigateTo = (path: string) => {
     router.push(path);
@@ -73,13 +61,6 @@ export default function Home() {
               <Button onClick={() => navigateTo('/recommendations')}>Get Recommendations</Button>
             </CardContent>
           </Card>
-        </div>
-
-        {/* Rider Location Display */}
-        <div className="mt-8">
-          <h2 className="text-3xl font-semibold mb-4">Rider Location</h2>
-          <p>Latitude: {riderLocation.lat}</p>
-          <p>Longitude: {riderLocation.lng}</p>
         </div>
       </main>
 
